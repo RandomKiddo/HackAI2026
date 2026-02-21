@@ -205,7 +205,7 @@ def gen_test_windows_fd004(df_test, window_size, op_cols, sensor_cols):
             
     return np.array(X), np.array(Y)
 
-def anomaly_rul_plot(df):
+def anomaly_rul_plot(df, threshold):
     fig, ax = plt.subplots(figsize=(12, 6))
 
     ax.scatter(df['Actual_RUL'], df['Max_Anomaly_Score'], label='Model Results')
@@ -225,7 +225,9 @@ def anomaly_rul_plot(df):
     a_fit, b_fit, c_fit = popt
     print(a_fit, b_fit, c_fit)
 
-    ax.plot(x_data, exponential_decay(x_data, *popt), orange)
+    ax.plot(x_data, exponential_decay(x_data, *popt), orange, label='Exponential Model')
+    
+    ax.axhline(threshold, linestyle='--', label='Threshold', color=orange)
 
     ax.set_title('Model True RUL vs. Anomaly MAE')
     ax.set_xlabel('True RUL')
@@ -234,6 +236,51 @@ def anomaly_rul_plot(df):
     ax.tick_params(axis='both', top=True, right=True, left=True, bottom=True, which='both', direction='in')
     ax.legend()
 
+    fig.tight_layout()
+
+    return fig
+
+def plot_threshold_justification(train_mae_loss, threshold):
+    fig, ax = plt.subplots(figsize=(12, 6))
+    
+    # 1. Plot the distribution
+    sns.histplot(train_mae_loss, bins=50, kde=True, color='slategray')
+    
+    # 2. Add the Mean and Threshold lines
+    mu = np.mean(train_mae_loss)
+    ax.axvline(mu, color='blue', linestyle='--', label=f'Mean: {mu:.4f}')
+    ax.axvline(threshold, color='red', linestyle='-', linewidth=2, label=fr'Threshold (2$\sigma$): {threshold:.4f}')
+    
+    # 3. Shade the "Normal" zone
+    ax.fill_betweenx([0, plt.gca().get_ylim()[1]], 0, threshold, color='green', alpha=0.1, label='Normal Operating Zone')
+
+    ax.set_title(r'Training MAE Distribution \& Fault Threshold')
+    ax.set_xlabel('Reconstruction Error (MAE)')
+    ax.set_ylabel('Frequency (Number of Windows)')
+    ax.legend()
+    ax.grid(True, linestyle='--', alpha=0.6)
+    ax.tick_params(axis='both', top=True, right=True, left=True, bottom=True, which='both', direction='in')
+    ax.set_xlim([np.min(train_mae_loss), np.max(train_mae_loss)])
+    
+    fig.tight_layout()
+    return fig
+
+def make_loss_plot(history):
+    fig, ax = plt.subplots(figsize=(12, 6))
+
+    train_loss = history.history['loss']
+    val_loss = history.history['val_loss']
+    epochs = range(1, len(train_loss) + 1)
+
+    ax.plot(epochs, train_loss, blue, label='Training Loss')
+    ax.plot(epochs, val_loss, orange, label='Validation Loss')
+    
+    ax.set_title('Training and Validation Loss (Autoencoder)')
+    ax.set_xlabel('Epochs')
+    ax.set_ylabel('Loss (MAE)')
+    ax.grid(True, linestyle='--', alpha=0.6)
+    ax.legend()
+    
     fig.tight_layout()
 
     return fig
