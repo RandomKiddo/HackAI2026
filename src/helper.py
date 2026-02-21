@@ -249,7 +249,7 @@ def plot_threshold_justification(train_mae_loss, threshold):
     # 2. Add the Mean and Threshold lines
     mu = np.mean(train_mae_loss)
     ax.axvline(mu, color='blue', linestyle='--', label=f'Mean: {mu:.4f}')
-    ax.axvline(threshold, color='red', linestyle='-', linewidth=2, label=fr'Threshold (2$\sigma$): {threshold:.4f}')
+    ax.axvline(threshold, color='red', linestyle='-', linewidth=2, label=f'Threshold (97.5\%): {threshold:.4f}')
     
     # 3. Shade the "Normal" zone
     ax.fill_betweenx([0, plt.gca().get_ylim()[1]], 0, threshold, color='green', alpha=0.1, label='Normal Operating Zone')
