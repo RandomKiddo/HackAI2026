@@ -11,12 +11,12 @@ plt.rcParams.update({
 })
 
 
-def failure_plot(anomaly_score: Any, threshold: Any, savefig: str = None) -> plt.Figure:
+def failure_plot(anomaly_score: Any, threshold: Any, unit_no: int, savefig: str = None) -> plt.Figure:
     fig, ax = plt.subplots(figsize=(12, 6))
 
     ax.plot(anomaly_score, label='Reconstruction Error (Anomaly Score)')
     ax.axhline(y=threshold, linestyle='--', label='Quiet Failure Threshold')
-    ax.title('Engine Unit 16: Quiet Failure Detection Over Time')
+    ax.set_title(f'Engine Unit {unit_no}: Quiet Failure Detection Over Time')
     ax.set_xlabel('Cycle')
     ax.set_ylabel('MAE Error')
     ax.legend()
