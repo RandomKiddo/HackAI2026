@@ -10,12 +10,15 @@ plt.rcParams.update({
     "font.size": 16
 })
 
+blue = plt.rcParams['axes.prop_cycle'].by_key()['color'][0]
+orange = plt.rcParams['axes.prop_cycle'].by_key()['color'][1]
+
 
 def failure_plot(anomaly_score: Any, threshold: Any, unit_no: int, savefig: str = None) -> plt.Figure:
     fig, ax = plt.subplots(figsize=(12, 6))
 
     ax.plot(anomaly_score, label='Reconstruction Error (Anomaly Score)')
-    ax.axhline(y=threshold, linestyle='--', label='Quiet Failure Threshold')
+    ax.axhline(y=threshold, linestyle='--', color=orange, label='Quiet Failure Threshold')
     ax.set_title(f'Engine Unit {unit_no}: Quiet Failure Detection Over Time')
     ax.set_xlabel('Cycle')
     ax.set_ylabel('MAE Error')
