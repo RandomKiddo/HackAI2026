@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt
+import pandas as pd
 
 from typing import *
 
@@ -16,7 +17,7 @@ def failure_plot(anomaly_score: Any, threshold: Any, savefig: str = None) -> plt
 
     ax.plot(anomaly_score, label='Reconstruction Error (Anomaly Score)')
     ax.axhline(y=threshold, linestyle='--', label='Quiet Failure Threshold')
-    ax.title('Engine Unit 16: Quiet Failure Detection Over Time')
+    ax.set_title('Engine Unit 16: Quiet Failure Detection Over Time')
     ax.set_xlabel('Cycle')
     ax.set_ylabel('MAE Error')
     ax.legend()
@@ -30,3 +31,17 @@ def failure_plot(anomaly_score: Any, threshold: Any, savefig: str = None) -> plt
 
     return fig
 
+def data_vis_hist(df, col: str, bins: int = 20, savefig: str = None) -> plt.Figure:
+    fig, ax = plt.subplots(figsize=(6, 6))
+    ax.hist(df[col], label=f'{col}', bins = bins)
+    ax.set_title(f"Histogram of {col}")
+    ax.set_xlabel(f"{col}")
+    ax.set_ylabel("Counts")
+    ax.legend()
+
+    fig.tight_layout()
+
+    if savefig:
+        fig.savefig(savefig)
+
+    return fig
