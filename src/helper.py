@@ -4,6 +4,7 @@ import numpy as np
 import pandas as pd
 
 from typing import *
+from scipy.optimize import curve_fit
 
 plt.style.use('tableau-colorblind10')
 plt.rcParams.update({
@@ -203,3 +204,36 @@ def gen_test_windows_fd004(df_test, window_size, op_cols, sensor_cols):
             Y.append(target_window)
             
     return np.array(X), np.array(Y)
+
+def anomaly_rul_plot(df):
+    fig, ax = plt.subplots(figsize=(12, 6))
+
+    ax.scatter(df['Actual_RUL'], df['Max_Anomaly_Score'], label='Model Results')
+
+    def exponential_decay(x, a, b, c):
+        return a * np.exp(-b * x) + c
+
+    # 2. Generate dummy scatter data with noise
+    x_data = np.linspace(np.min(df['Actual_RUL']), np.max(df['Actual_RUL']), 1000)
+
+    # 3. Fit the curve
+    # p0 is an optional initial guess for the parameters [a, b, c]
+    initial_guess = [0.5, 0.1, 0.0]
+    popt, pcov = curve_fit(exponential_decay, df['Actual_RUL'], df['Max_Anomaly_Score'], p0=initial_guess)
+
+    # popt contains the optimized [a, b, c] values
+    a_fit, b_fit, c_fit = popt
+    print(a_fit, b_fit, c_fit)
+
+    ax.plot(x_data, exponential_decay(x_data, *popt), orange)
+
+    ax.set_title('Model True RUL vs. Anomaly MAE')
+    ax.set_xlabel('True RUL')
+    ax.set_ylabel('Max Anomaly MAE')
+    ax.grid(True, linestyle='--', alpha=0.6)
+    ax.tick_params(axis='both', top=True, right=True, left=True, bottom=True, which='both', direction='in')
+    ax.legend()
+
+    fig.tight_layout()
+
+    return fig
