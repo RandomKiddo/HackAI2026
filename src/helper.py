@@ -29,7 +29,7 @@ def failure_plot(anomaly_score: Any, threshold: Any, unit_no: int, savefig: str 
     except:
         pass
     ax.set_title(f'Engine Unit {unit_no}: Quiet Failure Detection Over Time')
-    ax.set_xlabel('Cycle')
+    ax.set_xlabel('Cycle (Excluding Window Offset)')
     ax.set_ylabel('MAE Error')
     ax.grid(True, linestyle='--', alpha=0.6)
     ax.tick_params(axis='both', top=True, right=True, left=True, bottom=True, which='both', direction='in')
