@@ -390,3 +390,35 @@ def anomaly_rul_plot_fd004(ruls, maes, threshold):
     fig.tight_layout()
 
     return fig
+
+def plot_attention_heatmap(inference_model, x_data, sample_idx=0):
+    """
+    Generates predictions and plots the attention heatmap for a specific sample.
+    """
+    # Run inference to get predictions and  weights
+    results = inference_model.predict(x_data)
+    all_attention_weights = results[1]
+    
+    # Extract the 2D attention matrix
+    attention_matrix = all_attention_weights[sample_idx]
+    
+    # Plot
+    plt.figure(figsize=(10, 8))
+    
+    # Draw heatmap
+    ax = sns.heatmap(
+        attention_matrix, 
+        cmap="viridis",
+        cbar_kws={'label': 'Relative Attention'}
+    )
+    
+    # Labels
+    plt.title(f"Attention Weights Heatmap (Window {sample_idx})", fontsize=14, pad=15)
+    plt.xlabel("Encoder Time Steps", fontsize=12, labelpad=10)
+    plt.ylabel("Decoder Time Steps", fontsize=12, labelpad=10)
+    
+    # Invert the Y-axis (step 0 is at top left)
+    ax.invert_yaxis()
+    
+    plt.tight_layout()
+    plt.show()
