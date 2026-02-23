@@ -20,9 +20,4 @@ The original NASA dataset file on their website can also be found [here](https:/
 
 ___
 
-### Model
-___
-
-[Back to Top](#hackai-2026--unsupervised-lstm-autoencoder-for-jet-engine-fault-detection)
-
-<sub>This page was last edited on 02.21.2026.</sub>
+<sub>This page was last edited on 02.22.2026.</sub>
