@@ -25,7 +25,8 @@ Commercial aircraft engines face damages during flight, commonly known as "fault
 
 Airplane engines can operate for many cycles after the inital fault, and it is common for this initial fault to go unnoticed after its initial occurrence. 
 
-> [!IMPORTANT] This leads to the important distinction which we use throughout this project:
+> [!IMPORTANT] 
+> This leads to the important distinction which we use throughout this project:
 > * *Failure*: The official failure of the engine, where it can no longer function properly, and requires maintenance, downtime, or replacement.
 > * *Fault*: The point where the engine firsts develops a fault (sometimes silently), where there is some issue with the engine, but the engine is still able to run. The engine will run after developing a fault, until the fault eventually worsens, thus causing engine failure.
 
