@@ -50,4 +50,6 @@ As the autoencoder processes each window of data, it calculates the reconstructi
 
 ___
 
+[Back to Top](#hackai-2026--unsupervised-lstm-autoencoder-for-jet-engine-fault-detection)
+
 <sub>This page was last edited on 03.06.2026.</sub>
